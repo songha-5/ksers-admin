@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KSERS 2027 진행 현황</title>
+  <style>
+    :root {
+      --navy: #09428f;
+      --text: #263238;
+      --muted: #52525b;
+      --line: #e4e4e7;
+      --page: #f4f7fb;
+      --ok: #0f766e;
+      --part: #b45309;
+      --miss: #b91c1c;
+      --wait: #1d4ed8;
+      --out: #52525b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      color: var(--text);
+      background: var(--page);
+      line-height: 1.55;
+    }
+    main { max-width: 960px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { margin: 0 0 8px; font-size: 26px; letter-spacing: -0.03em; }
+    .meta { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+    .tabs button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tabs button.active {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .counts { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+    .count {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-width: 110px;
+      padding: 12px 16px;
+    }
+    .count b { display: block; font-size: 26px; line-height: 1.1; }
+    .count span { color: var(--muted); font-size: 13px; }
+    .count.ok b { color: var(--ok); }
+    .count.part b { color: var(--part); }
+    .count.miss b { color: var(--miss); }
+    .count.wait b { color: var(--wait); }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 20px; }
+    .filters button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font: inherit;
+      cursor: pointer;
+    }
+    .filters button.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); }
+    th, td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); font-size: 14px; }
+    th { background: #f8fafc; font-size: 13px; color: var(--muted); }
+    td.num { width: 48px; text-align: right; font-weight: 700; }
+    td.cat { width: 88px; white-space: nowrap; }
+    td.status { width: 88px; white-space: nowrap; font-weight: 700; }
+    .badge.반영, .badge.준비완료 { color: var(--ok); }
+    .badge.부분반영, .badge.진행중 { color: var(--part); }
+    .badge.미반영 { color: var(--miss); }
+    .badge.확인요청 { color: var(--wait); }
+    .badge.범위외 { color: var(--out); }
+    .note {
+      margin-top: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--navy);
+      padding: 14px 16px;
+      font-size: 14px;
+    }
+    .note strong { display: block; margin-bottom: 4px; }
+    .foot { margin-top: 12px; color: var(--muted); font-size: 13px; }
+    .guide {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+    .guide h2 { margin: 0 0 10px; font-size: 18px; }
+    .guide h3 { margin: 18px 0 8px; font-size: 15px; }
+    .guide ul { margin: 0; padding-left: 18px; }
+    .guide li { margin: 6px 0; }
+    .guide code {
+      display: inline-block;
+      background: #f4f7fb;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      word-break: break-all;
+    }
+    .muted { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+    .links {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .links h2 { margin: 0 0 8px; font-size: 16px; }
+    .links .hint { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+    .links table { margin: 0; }
+    .links td:first-child { width: 160px; white-space: nowrap; font-weight: 600; color: var(--muted); }
+    .links a { color: var(--navy); word-break: break-all; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>KSERS 2027 진행 현황</h1>
+    <p class="meta">학술대회 홈페이지·참가 등록 시스템 진행 상황을 공유드립니다. 갱신일 2026-10-21.</p>
+
+    <div class="links">
+      <h2>접속 주소</h2>
+      <p class="hint">지금은 기능 확인용 초안입니다. 공식 참가비·입금 계좌 입력 전이며, 카드 결제는 아직 연결되어 있지 않습니다.</p>
+      <table>
+        <tbody>
+          <tr>
+            <td>진행 현황 (이 페이지)</td>
+            <td><a href="https://ksers-web-production.up.railway.app/status.html">https://ksers-web-production.up.railway.app/status.html</a></td>
+          </tr>
+          <tr>
+            <td>로그인</td>
+            <td><a href="https://ksers-web-production.up.railway.app/service/login.php">https://ksers-web-production.up.railway.app/service/login.php</a></td>
+          </tr>
+          <tr>
+            <td>회원가입</td>
+            <td><a href="https://ksers-web-production.up.railway.app/service/join.php">https://ksers-web-production.up.railway.app/service/join.php</a></td>
+          </tr>
+          <tr>
+            <td>마이페이지</td>
+            <td><a href="https://ksers-web-production.up.railway.app/service/mypage.php">https://ksers-web-production.up.railway.app/service/mypage.php</a> <span class="muted">(로그인 후)</span></td>
+          </tr>
+          <tr>
+            <td>관리자 홈</td>
+            <td><a href="https://ksers-web-production.up.railway.app/admin/index.php">https://ksers-web-production.up.railway.app/admin/index.php</a> <span class="muted">(관리자 계정)</span></td>
+          </tr>
+          <tr>
+            <td>프로그램·연자</td>
+            <td><a href="https://ksers-web-production.up.railway.app/admin/page/program/list.php">https://ksers-web-production.up.railway.app/admin/page/program/list.php</a></td>
+          </tr>
+          <tr>
+            <td>대회 설정</td>
+            <td><a href="https://ksers-web-production.up.railway.app/admin/page/setting/index.php">https://ksers-web-production.up.railway.app/admin/page/setting/index.php</a> <span class="muted">(참가비·계좌)</span></td>
+          </tr>
+          <tr>
+            <td>기준 주소</td>
+            <td><a href="https://ksers-web-production.up.railway.app">https://ksers-web-production.up.railway.app</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tabs" id="mainTabs">
+      <button type="button" data-tab="home" class="active">홈페이지</button>
+      <button type="button" data-tab="reg">참가 등록 시스템</button>
+      <button type="button" data-tab="req">확인·자료 요청</button>
+    </div>
+
+    <section class="panel active" id="panel-home">
+      <div class="counts" id="homeCounts"></div>
+      <div class="filters" id="homeFilters"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>구분</th>
+            <th>항목</th>
+            <th>현황</th>
+            <th>설명</th>
+          </tr>
+        </thead>
+        <tbody id="homeRows"></tbody>
+      </table>
+      <p class="foot" id="homeSummary"></p>
+      <div class="note">
+        <strong>연자·프로그램 데이터</strong>
+        사무국에서 관리 화면에 세션·연자 정보를 올리시면, 홈페이지 Scientific Program / Program at a Glance에 반영되도록 준비하고 있습니다. 화면 연동은 아래 「확인·자료 요청」 확인 후 진행합니다.
+      </div>
+    </section>
+
+    <section class="panel" id="panel-reg">
+      <div class="counts" id="regCounts"></div>
+      <div class="filters" id="regFilters"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>구분</th>
+            <th>항목</th>
+            <th>현황</th>
+            <th>설명</th>
+          </tr>
+        </thead>
+        <tbody id="regRows"></tbody>
+      </table>
+      <p class="foot" id="regSummary"></p>
+      <div class="note">
+        <strong>접속 안내</strong>
+        위쪽 「접속 주소」에서 로그인·가입·관리자·프로그램·연자 링크를 확인하실 수 있습니다. 공식 참가비·입금 계좌는 대회 설정에 입력해 주시면 반영됩니다.
+      </div>
+    </section>
+
+    <section class="panel" id="panel-req">
+      <div class="guide">
+        <h2>확인·자료 요청</h2>
+        <p class="muted">아래 항목을 확인해 주시면 홈페이지 연동과 등록 운영을 이어서 진행할 수 있습니다.</p>
+        <p class="muted" id="reqSummary"></p>
+        <table>
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>구분</th>
+              <th>요청 내용</th>
+              <th>현황</th>
+              <th>용도</th>
+            </tr>
+          </thead>
+          <tbody id="reqRows"></tbody>
+        </table>
+      </div>
+
+      <div class="guide">
+        <h2>프로그램·연자 관리 화면 안내</h2>
+        <h3>목적</h3>
+        <ul>
+          <li>세션·연자·CV·초록 파일을 관리 화면에 등록하면 홈페이지 프로그램 화면에 연동되도록 준비합니다.</li>
+          <li>홈페이지에 실제 반영은 필드·사용 방식 확인 후 진행합니다.</li>
+        </ul>
+        <h3>접속</h3>
+        <ul>
+          <li>주소: <code>https://ksers-web-production.up.railway.app/service/login.php</code></li>
+          <li>관리자 계정으로 로그인 → 메뉴 「프로그램·연자」</li>
+        </ul>
+        <h3>등록 방법</h3>
+        <ul>
+          <li>화면에서 세션 추가 → 좌장 → 발표·연자 입력</li>
+          <li>또는 CSV로 일괄 등록 (관리 화면에 양식 제공)</li>
+          <li>사진, CV(PDF), Abstract(PDF)는 발표별로 파일 업로드</li>
+        </ul>
+        <h3>입력 항목 (2026 홈페이지 기준)</h3>
+        <ul>
+          <li>세션: ID, 카테고리, 코드, 제목, 날짜, 시간, 룸, 색, 공개 여부</li>
+          <li>좌장: 이름, 소속</li>
+          <li>발표·연자: 코드, 제목, 연자명, 소속, 국가, 사진·CV·Abstract</li>
+        </ul>
+        <h3>참고</h3>
+        <ul>
+          <li>세션을 한 번 등록하면 Program at a Glance(시간표)와 Scientific Program(상세)이 같은 데이터를 사용합니다.</li>
+          <li>사이트에 공개할 데이터는 이 관리 화면에 올려 주시면 됩니다.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const homeItems = [
+      ["안내", "대회 안내·위원회 등 기본 페이지", "진행중", "페이지별 제작이 진행 중입니다. 레이아웃이 된 페이지는 원고·데이터 교체만 남습니다."],
+      ["Program", "Program at a Glance", "부분반영", "일자·시간·룸·세션 시간표 화면을 구성했습니다. 연자 상세는 데이터 연동 후 표시됩니다."],
+      ["Program", "Scientific Program", "부분반영", "세션 구조·이동 앵커를 준비했습니다. 연자·CV·Abstract는 관리 화면 데이터 연동 후 표시됩니다."],
+      ["Program", "연자·세션 데이터 관리", "준비완료", "관리 화면에서 세션·좌장·연자·파일을 등록할 수 있습니다. 홈페이지 표시 연동은 확인 후 진행합니다."],
+      ["연동", "등록·로그인 이동", "부분반영", "참가 등록 시스템 주소는 준비되었습니다. 공식 홈페이지 버튼 연결은 확인 후 반영합니다."],
+      ["연동", "News & Notices", "진행중", "페이지 작업 후 공지 데이터 기준에 맞춰 연결합니다."]
+    ];
+
+    const regItems = [
+      ["회원", "회원가입·로그인·정보 수정", "반영", "이메일 가입·로그인, 국·영문 회원정보 수정이 됩니다."],
+      ["등록", "참가 등록 (계정·연도당 1건)", "반영", "로그인 후 참가 등록이 가능합니다. 결제 전 수정이 됩니다."],
+      ["등록", "참가비·추가 항목", "부분반영", "관리자가 금액·기간을 넣으면 그 금액이 나옵니다. 공식 참가비·계좌 입력을 기다리고 있습니다."],
+      ["등록", "등록 확인서·영수증", "반영", "등록 확인서와 결제 영수증을 인쇄할 수 있습니다. (국세청 현금영수증 연동은 범위 외)"],
+      ["초록", "초록 접수", "반영", "로그인 후 PDF·DOC·DOCX로 제출·수정·삭제가 됩니다."],
+      ["초록", "초록 분야·심사 결과", "부분반영", "관리자가 분야·채택·반려를 관리합니다. 결과 메일은 보내는 주소 설정 후 발송됩니다."],
+      ["결제", "무통장 입금", "반영", "무통장 접수와 관리자 입금 확인이 됩니다."],
+      ["결제", "국내·해외 카드", "미반영", "결제사 자료 연결 후 개방합니다. 카드번호는 서버에 저장하지 않습니다."],
+      ["결제", "환불", "부분반영", "관리자가 전액 환불을 처리할 수 있습니다. 부분 환불·카드 자동 취소는 해당 없습니다."],
+      ["관리", "회원·등록·결제·초록 조회·엑셀", "반영", "관리 화면에서 조회하고 엑셀로 받을 수 있습니다."],
+      ["관리", "대회 설정 (명칭·안내·계좌·참가비)", "반영", "연도별로 대회 정보와 참가비를 설정합니다."],
+      ["관리", "프로그램·연자 등록", "반영", "세션·좌장·발표·연자·CV·Abstract 파일을 등록·수정할 수 있습니다."],
+      ["기타", "국문·영문 화면", "반영", "참가자·관리자 화면을 국문·영문으로 전환할 수 있습니다."],
+      ["기타", "회원 본인 등록 취소", "확인요청", "제공 여부를 확인해 주시면 반영합니다."],
+      ["범위외", "리뷰어 전용 화면, 국세청 영수증 연동 등", "범위외", "계약 범위에 포함되지 않은 항목입니다."]
+    ];
+
+    const reqItems = [
+      ["확인", "관리 화면(등록·프로그램) 구성 확인", "확인요청", "메뉴와 입력 항목이 운영에 맞는지 확인 부탁드립니다."],
+      ["확인", "연자·세션 입력 항목 확정", "확인요청", "2026 홈페이지 기준으로 구성했습니다. 추가·수정이 있으면 알려 주세요."],
+      ["자료", "2027 프로그램·연자 데이터", "확인요청", "엑셀 또는 CSV로 주시면 관리 화면에 반영할 수 있습니다."],
+      ["자료", "공식 참가비·기간·입금 계좌", "확인요청", "대회 설정에 입력한 뒤 참가자에게 안내됩니다."],
+      ["자료", "결과·안내 메일 발송 주소", "확인요청", "초록 결과·입금 확인 메일 발송에 사용합니다."],
+      ["자료", "카드 결제 연동 자료 (국내·해외)", "확인요청", "연결 전까지는 무통장만 이용 가능합니다."],
+      ["자료", "공식 초록 분야 목록", "확인요청", "목록이 있으면 그중에서만 선택하게 할 수 있습니다."],
+      ["확인", "회원 본인 등록 취소 기능 필요 여부", "확인요청", "필요 여부를 알려 주시면 반영합니다."]
+    ];
+
+    const labels = {
+      "반영": "반영", "부분반영": "부분반영", "미반영": "미반영", "확인요청": "확인 요청",
+      "범위외": "범위 외", "진행중": "진행 중", "준비완료": "준비 완료"
+    };
+    const classes = {
+      "반영": "ok", "부분반영": "part", "미반영": "miss", "확인요청": "wait",
+      "범위외": "", "진행중": "part", "준비완료": "ok"
+    };
+
+    function badgeClass(status) {
+      return status;
+    }
+
+    function makeTableController(items, filterList, countsId, filtersId, rowsId, summaryId) {
+      let current = "전체";
+      function count(status) {
+        return items.filter((item) => item[2] === status).length;
+      }
+      function drawCounts() {
+        const keys = filterList.filter((name) => name !== "전체");
+        document.getElementById(countsId).innerHTML = keys.map((status) => {
+          return '<div class="count ' + (classes[status] || "") + '"><b>' + count(status) + "</b><span>" + (labels[status] || status) + "</span></div>";
+        }).join("");
+      }
+      function drawFilters() {
+        const box = document.getElementById(filtersId);
+        box.innerHTML = filterList.map((name) => {
+          return '<button type="button" data-filter="' + name + '"' + (name === current ? ' class="active"' : "") + ">" + (name === "전체" ? "전체" : (labels[name] || name)) + "</button>";
+        }).join("");
+        box.querySelectorAll("button").forEach((button) => {
+          button.addEventListener("click", () => {
+            current = button.getAttribute("data-filter");
+            draw();
+          });
+        });
+      }
+      function drawRows() {
+        const visible = items
+          .map((item, index) => ({ item: item, no: index + 1 }))
+          .filter((row) => current === "전체" || row.item[2] === current);
+        document.getElementById(rowsId).innerHTML = visible.map((row) => {
+          const item = row.item;
+          return '<tr><td class="num">' + row.no + '</td><td class="cat">' + item[0] + "</td><td>" + item[1]
+            + '</td><td class="status badge ' + badgeClass(item[2]) + '">' + (labels[item[2]] || item[2]) + "</td><td>" + item[3] + "</td></tr>";
+        }).join("");
+        const parts = filterList.filter((n) => n !== "전체").map((s) => (labels[s] || s) + " " + count(s) + "건");
+        document.getElementById(summaryId).textContent =
+          "전체 " + items.length + "건 중 " + visible.length + "건. " + parts.join(", ") + ".";
+      }
+      function draw() {
+        drawCounts();
+        drawFilters();
+        drawRows();
+      }
+      return { draw: draw };
+    }
+
+    const homeCtrl = makeTableController(
+      homeItems,
+      ["전체", "준비완료", "진행중", "부분반영", "미반영"],
+      "homeCounts", "homeFilters", "homeRows", "homeSummary"
+    );
+    const regCtrl = makeTableController(
+      regItems,
+      ["전체", "반영", "부분반영", "미반영", "확인요청", "범위외"],
+      "regCounts", "regFilters", "regRows", "regSummary"
+    );
+
+    function drawReq() {
+      document.getElementById("reqRows").innerHTML = reqItems.map((item, index) => {
+        return '<tr><td class="num">' + (index + 1) + '</td><td class="cat">' + item[0] + "</td><td>" + item[1]
+          + '</td><td class="status badge ' + badgeClass(item[2]) + '">' + (labels[item[2]] || item[2]) + "</td><td>" + item[3] + "</td></tr>";
+      }).join("");
+      document.getElementById("reqSummary").textContent = "요청 " + reqItems.length + "건.";
+    }
+
+    document.querySelectorAll("#mainTabs button").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll("#mainTabs button").forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
+        button.classList.add("active");
+        document.getElementById("panel-" + button.getAttribute("data-tab")).classList.add("active");
+      });
+    });
+
+    homeCtrl.draw();
+    regCtrl.draw();
+    drawReq();
+  </script>
+</body>
+</html>

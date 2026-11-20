@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{mail_subject}}</title>
+<!--
+  KSERS 2027 notification mail - base template (English)
+  - Table layout + inline styles for email client compatibility (Gmail, Outlook, Naver, etc.)
+  - Replace {{...}} placeholders per mail. For system (transactional) mails only. Newsletters are sent separately via Brevo campaigns.
+  - Optional blocks are wrapped in BLOCK:name ... /BLOCK:name comments (delete the whole block if unused)
+  - Colors from KSERS 2027 logo: navy #012D6C (header/button) / blue #0086C9 (logo #08B0F0 darkened for readability)
+-->
+</head>
+<body style="margin:0;padding:0;background-color:#F2F4F7;">
+<!-- preheader: summary text shown in inbox list (hidden in body) -->
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#F2F4F7;">{{preheader}}</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F2F4F7;">
+<tr><td align="center" style="padding:24px 12px;">
+
+  <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background-color:#FFFFFF;border:1px solid #E1E5EB;">
+
+    <!-- HEADER -->
+    <tr><td style="background-color:#012D6C;padding:20px 28px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td style="padding-right:18px;vertical-align:middle;">
+          <img src="{{logo_mark_url}}" alt="KSERS" height="72" style="display:block;height:72px;width:auto;border:0;">
+        </td>
+        <td style="vertical-align:middle;font-family:Arial,Helvetica,sans-serif;color:#FFFFFF;">
+          <div style="font-size:11px;line-height:14px;color:#00E5FF;letter-spacing:1px;">31<sup style="font-size:8px;">st</sup> ANNIVERSARY</div>
+          <div style="font-size:28px;line-height:34px;font-weight:bold;letter-spacing:0.5px;color:#FFFFFF;">KSERS<span style="color:#00E5FF;font-weight:normal;">2027</span></div>
+          <div style="font-size:13px;line-height:18px;padding-top:4px;color:#FFFFFF;"><strong>April 22&ndash;24, 2027</strong> &nbsp;|&nbsp; Lotte Hotel Seoul, Korea</div>
+        </td>
+      </tr></table>
+    </td></tr>
+
+    <!-- MAIL TITLE -->
+    <tr><td style="padding:32px 32px 8px 32px;font-family:Arial,Helvetica,sans-serif;">
+      <div style="font-size:12px;font-weight:bold;color:#0086C9;text-transform:uppercase;letter-spacing:1px;">{{mail_category}}</div>
+      <div style="font-size:22px;font-weight:bold;color:#1A1A1A;padding-top:6px;line-height:30px;">{{mail_title}}</div>
+    </td></tr>
+
+    <!-- BODY TEXT -->
+    <tr><td style="padding:16px 32px 8px 32px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#333333;">
+      <p style="margin:0 0 16px 0;">Dear {{recipient_name}},</p>
+      {{body_paragraphs}}
+    </td></tr>
+
+    <!-- BLOCK:info_table (key-value summary: receipt no., title, etc.) -->
+    <tr><td style="padding:8px 32px 8px 32px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:2px solid #012D6C;font-family:Arial,Helvetica,sans-serif;font-size:14px;">
+        {{info_rows}}
+        <!-- one row:
+        <tr>
+          <td width="34%" style="padding:10px 12px;background-color:#F5F7FA;border-bottom:1px solid #E1E5EB;color:#555555;font-weight:bold;vertical-align:top;">Label</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #E1E5EB;color:#1A1A1A;vertical-align:top;">Value</td>
+        </tr>
+        -->
+      </table>
+    </td></tr>
+    <!-- /BLOCK:info_table -->
+
+    <!-- BLOCK:button -->
+    <tr><td align="center" style="padding:24px 32px 8px 32px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td align="center" bgcolor="#012D6C" style="border-radius:4px;">
+          <a href="{{button_url}}" target="_blank" style="display:inline-block;padding:13px 32px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#FFFFFF;text-decoration:none;">{{button_label}}</a>
+        </td>
+      </tr></table>
+    </td></tr>
+    <!-- /BLOCK:button -->
+
+    <!-- BLOCK:notice (deadline, cautions) -->
+    <tr><td style="padding:16px 32px 8px 32px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td style="padding:14px 16px;background-color:#FFF8E6;border-left:4px solid #E0A526;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;color:#5A4A1F;">
+          {{notice_text}}
+        </td>
+      </tr></table>
+    </td></tr>
+    <!-- /BLOCK:notice -->
+
+    <!-- CLOSING -->
+    <tr><td style="padding:24px 32px 32px 32px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#333333;">
+      If you have any questions, please contact the Secretariat at
+      <a href="mailto:ksers2027@ksers.kr" style="color:#0086C9;">ksers2027@ksers.kr</a>.<br><br>
+      Best regards,<br>
+      <strong>KSERS 2027 Secretariat</strong>
+    </td></tr>
+
+    <!-- FOOTER -->
+    <tr><td style="background-color:#F5F7FA;border-top:1px solid #E1E5EB;padding:20px 32px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#777777;">
+      <span style="color:#555555;">KSERS 2027: The 59th Congress of the Korean Society of Endo-Laparoscopic &amp; Robotic Surgery (KSERS) &amp; the 17th International Symposium - Commemorating the 31st Anniversary of KSERS</span><br><br><strong style="color:#555555;">KSERS 2027 Secretariat</strong><br>
+      E-mail: <a href="mailto:ksers2027@ksers.kr" style="color:#777777;">ksers2027@ksers.kr</a> &nbsp;|&nbsp; Website: <a href="{{website_url}}" style="color:#777777;">{{website_url_text}}</a><br>
+      This e-mail was sent to {{recipient_email}} in connection with your {{send_reason}} for KSERS 2027.<br>This is a send-only e-mail address and replies cannot be received. For inquiries, please contact <a href="mailto:ksers2027@ksers.kr" style="color:#777777;">ksers2027@ksers.kr</a>.
+    </td></tr>
+
+  </table>
+
+</td></tr>
+</table>
+</body>
+</html>
